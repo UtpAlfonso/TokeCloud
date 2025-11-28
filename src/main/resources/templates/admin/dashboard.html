@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org"
+      th:insert="~{_layout :: html(content=~{::content})}">
+
+<th:block th:fragment="content">
+    <div class="container py-4">
+        
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1 class="mb-0">Panel de Administración</h1>
+            <span class="badge bg-primary fs-6">Dashboard</span>
+        </div>
+        
+        <ul class="nav nav-tabs mb-4">
+            <li class="nav-item">
+                <!-- CORREGIDO AQUÍ -->
+            <a class="nav-link" th.href="@{/admin/dashboard}" th:classappend="${requestURI == '/admin/dashboard' ? 'active' : ''}">
+                <i class="bi bi-speedometer2"></i> Dashboard
+            </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/productos}"
+                    th:classappend="${requestURI.startsWith('/admin/productos') ? 'active' : ''}">
+                    <i class="bi bi-box-seam"></i> Productos
+                </a>
+            </li>
+             <li class="nav-item">
+                <a class="nav-link" th:href="@{/admin/pedidos}"
+                    th:classappend="${requestURI.startsWith('/admin/pedidos') ? 'active' : ''}">
+                    <i class="bi bi-receipt"></i> Pedidos
+                </a>
+            </li>
+        </ul>
+            <hr>
+            <div class="dropdown">
+                <a href="#" class="d-flex align-items-center text-white text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                    <i class="bi bi-person-circle fs-4 me-2"></i>
+                    <strong><span sec:authentication="name"></span></strong>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-dark text-small shadow">
+                    <li><a class="dropdown-item" th:href="@{/}">Volver a la Tienda</a></li>
+                    <li><hr class="dropdown-divider"></li>
+                    <li>
+                         <form th:action="@{/logout}" method="post" class="d-inline">
+                            <button type="submit" class="dropdown-item">Cerrar Sesión</button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Contenido Principal -->
+        <div class="container-fluid p-4" th:object="${estadisticas}">
+            <h1>Dashboard</h1>
+            <p class="lead">Resumen general de la actividad de la tienda.</p>
+
+            <!-- Tarjetas de Estadísticas -->
+            <div class="row g-4 mb-4">
+                <div class="col-md-3">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body">
+                            <h5 class="card-title">Ingresos Totales</h5>
+                            <p class="card-text fs-4" th:text="|S/ ${#numbers.formatDecimal(estadisticas.ingresosTotales, 1, 'COMMA', 2, 'POINT')}|">S/ 0.00</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-success">
+                        <div class="card-body">
+                            <h5 class="card-title">Pedidos Totales</h5>
+                            <p class="card-text fs-4" th:text="*{totalPedidos}">0</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-3">
+                    <div class="card text-white bg-info">
+                        <div class="card-body">
+                            <h5 class="card-title">Usuarios Registrados</h5>
+                            <p class="card-text fs-4" th:text="*{totalUsuarios}">0</p>
+                        </div>
+                    </div>
+                </div>
+                 <div class="col-md-3">
+                    <div class="card text-white bg-warning">
+                        <div class="card-body">
+                            <h5 class="card-title">Productos Totales</h5>
+                            <p class="card-text fs-4" th:text="*{totalProductos}">0</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Productos más vendidos -->
+            <div class="card">
+                <div class="card-header">
+                    <h4>Productos Más Vendidos</h4>
+                </div>
+                <div class="card-body">
+                     <ul class="list-group list-group-flush">
+                        <li th:each="producto : *{productosMasVendidos}" class="list-group-item d-flex align-items-center">
+                            <img th:src="${producto.urlImagen}" style="width: 50px; height: 50px; object-fit: cover;" class="me-3 rounded">
+                            <span th:text="${producto.nombre}">Nombre del Producto</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+</th:block>
+</html>

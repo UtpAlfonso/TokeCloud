@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="es" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security" th:fragment="html(content)">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}"/>
+    <meta name="_csrf_header" th:content="${_csrf.headerName}"/>
+    <title th:text="${pageTitle} ?: 'Toke Inca'"></title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@3.4.0/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/primeicons/primeicons.css" rel="stylesheet">
+    <style>
+
+   .rating {
+    display: flex; /* Usamos flexbox para alinear */
+    flex-direction: row-reverse; /* ¡El truco! Invierte el orden de los elementos */
+    justify-content: flex-end; /* Alinea las estrellas a la izquierda */
+}
+
+/* Oculta los radio buttons originales */
+.rating > input {
+    display: none;
+}
+
+/* Estilo de las estrellas (las etiquetas <label>) */
+.rating > label {
+    font-size: 2.5rem; /* Tamaño de las estrellas */
+    color: #ddd; /* Color de estrella inactiva */
+    cursor: pointer;
+    transition: color 0.2s; /* Transición suave de color */
+}
+
+/* Efecto hover: colorea la estrella sobre la que está el mouse Y las que están a su 'derecha' (que visualmente son las de la izquierda gracias a flex-direction) */
+.rating > label:hover,
+.rating > label:hover ~ label {
+    color: #f7d106;
+}
+
+/* Efecto de selección: mantiene coloreadas las estrellas seleccionadas */
+.rating > input:checked ~ label {
+    color: #f7d106;
+}
+
+ .stars-display {
+            color: #f7d106; /* Color amarillo de estrella */
+            font-size: 1.2rem;
+        }
+        .stars-display .star-inactive {
+            color: #ddd; /* Color de estrella inactiva */
+        }
+
+    .tour-chatbox-button {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #0d6efd;
+    color: white;
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    cursor: pointer;
+    z-index: 1000;
+}
+.tour-highlight {
+    box-shadow: 0 0 0 4px rgba(13, 110, 253, 0.5);
+    border-radius: .375rem;
+}
+/* Estilo para el menú lateral activo */
+        .account-nav .list-group-item.active {
+            background-color: #0d6efd;
+            border-color: #0d6efd;
+        }
+
+        /* Efecto hover sutil en el menú lateral */
+        .account-nav .list-group-item-action:hover {
+            background-color: #f8f9fa;
+        }
+
+        /* Estilo para las tarjetas de contenido */
+        .account-content .card {
+            border: none;
+            border-radius: .5rem;
+        }
+        
+        /* Estilo para los badges de estado de pedido */
+        .badge.bg-info {
+            color: #000 !important; /* Texto oscuro para mejor lectura en fondos claros */
+        }
+        .badge.bg-warning {
+            color: #000 !important;
+        }
+  #carouselExample .carousel-item img {
+    height: 500px; /* o la altura que prefieras */
+    object-fit: cover; /* mantiene proporción y recorta si es necesario */
+  }
+</style>
+</head>
+<body>
+    <header th:replace="~{fragments/_header :: header}"></header>
+
+    <main class="container my-4">
+        <th:block th:replace="${content}" />
+
+    </main>
+
+    <footer th:replace="~{fragments/_footer :: footer}"></footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script th:src="@{/js/main.js}"></script>
+    <script th:src="@{/js/carrito-dinamico.js}"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+      const videoModal = new bootstrap.Modal(document.getElementById('videoModal'));
+      videoModal.show();
+    });
+  </script>
+     <div id="tour-chatbox-button" class="tour-chatbox-button">
+        <i class="bi bi-question-lg"></i>
+    </div>
+</body>
+</html>

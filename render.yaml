@@ -1,0 +1,44 @@
+# render.yaml
+
+services:
+  # --- Servicio para el Backend de Spring Boot ---
+  - type: web
+    name: jugueteria-api
+    # Entorno de ejecución, le decimos que use Docker.
+    runtime: docker
+    # Ruta al Dockerfile dentro de tu repositorio.
+    # Si está en la raíz, es solo './Dockerfile'.
+    dockerfilePath: ./DockerFile 
+    # Propiedades de la instancia (puedes empezar con el plan gratuito)
+    plan: free 
+    # Región donde se desplegará el servicio.
+    region: oregon # Elige una región, ej: 'oregon', 'frankfurt'
+    # Configuración de la salud de la aplicación.
+    # --- Variables de Entorno ---
+    # Aquí definimos las variables que leerá tu application.properties.
+    envVars:
+      # 1. Variables de la Base de Datos de Railway
+      #    Crea estas variables como "Secret" en el panel de Render.
+      - key: DATABASE_URL
+        sync: false # La pondremos manualmente desde Railway
+      - key: MYSQLUSER
+        sync: false
+      - key: MYSQLPASSWORD
+        sync: false
+
+      # 2. Variables de Secretos de la Aplicación
+      #    Crea estas variables como "Secret" en el panel de Render.
+      - key: MAIL_USERNAME
+        sync: false
+      - key: MAIL_PASSWORD
+        sync: false
+      - key: CLOUDINARY_URL
+        sync: false
+      
+      # 3. Variables no secretas
+      - key: MAIL_HOST
+        value: sandbox.smtp.mailtrap.io
+      - key: MAIL_PORT
+        value: 2525
+        fromSecret: GMAIL_APP_PASSWORD
+      # Access Token de PRODUCCIÓN de Mercado Pago.
