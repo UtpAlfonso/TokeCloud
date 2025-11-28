@@ -6,6 +6,8 @@ import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.springframework.web.multipart.MultipartFile;
 import java.math.BigDecimal;
+import java.util.HashMap; // Importa HashMap
+import java.util.Map; 
 
 @Data
 public class ProductoAdminDTO {
@@ -28,4 +30,6 @@ public class ProductoAdminDTO {
     
     // Campo para mostrar la URL de la imagen actual al editar
     private String urlImagenActual;
+
+    private Map<Long, Integer> inventario = new HashMap<>();
 }

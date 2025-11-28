@@ -42,6 +42,26 @@
                                 </div>
                             </div>
 
+                            <div class="mb-4">
+    <h5 class="form-label">Stock por Talla</h5>
+    <div class="row g-3">
+        <!-- Iteramos sobre TODAS las tallas que pasamos desde el controlador -->
+        <div class="col-md-3" th:each="talla : ${todasLasTallas}">
+            <div class="input-group">
+                <!-- Mostramos el nombre de la talla como etiqueta -->
+                <span class="input-group-text" th:text="${talla.nombre}">S</span>
+                <!-- 
+                  Este es el input para el stock. La magia está en th:field.
+                  "*{inventario[...]}" le dice a Thymeleaf que vincule este input
+                  a la entrada del Map 'inventario' cuya clave sea el ID de la talla.
+                  Ej: name="inventario[1]" para la talla con ID 1.
+                -->
+                <input type="number" class="form-control" th:field="*{inventario[__${talla.id}__]}" placeholder="0" min="0">
+            </div>
+        </div>
+    </div>
+</div>
+
                             <div class="mb-3">
                                 <label for="imagen" class="form-label">Imagen del Producto</label>
                                 <input type="file" id="imagen" name="imagen" class="form-control" accept="image/png, image/jpeg, image/gif">
