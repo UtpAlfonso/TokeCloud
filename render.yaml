@@ -1,44 +1,42 @@
-# render.yaml
-
+# ==========================================================
+# Blueprint para desplegar Toke Inca App en Render
+# CONECTADO A UNA BASE DE DATOS EXTERNA EN RAILWAY
+# ==========================================================
 services:
-  # --- Servicio para el Backend de Spring Boot ---
+  # --- Único Servicio: La Aplicación Spring Boot ---
   - type: web
-    name: tokeInka
-    # Entorno de ejecución, le decimos que use Docker.
+    name: toke-inka-app
     runtime: docker
-    # Ruta al Dockerfile dentro de tu repositorio.
-    # Si está en la raíz, es solo './Dockerfile'.
-    dockerfilePath: ./DockerFile 
-    # Propiedades de la instancia (puedes empezar con el plan gratuito)
-    plan: free 
-    # Región donde se desplegará el servicio.
-    region: oregon # Elige una región, ej: 'oregon', 'frankfurt'
-    # Configuración de la salud de la aplicación.
-    # --- Variables de Entorno ---
-    # Aquí definimos las variables que leerá tu application.properties.
+    plan: free
+    dockerfilePath: ./Dockerfile
+    autoDeploy: true
+    branch: main
+    
+    # Variables de Entorno
     envVars:
-      # 1. Variables de la Base de Datos de Railway
-      #    Crea estas variables como "Secret" en el panel de Render.
-      - key: DATABASE_URL
-        sync: false # La pondremos manualmente desde Railway
-      - key: MYSQLUSER
-        sync: false
-      - key: MYSQLPASSWORD
-        sync: false
+      # --- VARIABLES PARA CONFIGURAR EL MODO PRODUCCIÓN ---
+      - key: SPRING_JPA_HIBERNATE_DDL_AUTO
+        value: validate
+      - key: SPRING_JPA_SHOW_SQL
+        value: false
+      - key: SPRING_THYMELEAF_CACHE
+        value: true
+# O usa un secreto
 
-      # 2. Variables de Secretos de la Aplicación
-      #    Crea estas variables como "Secret" en el panel de Render.
-      - key: MAIL_USERNAME
+      # --- VARIABLES SECRETAS ---
+      # Estas se deben añadir manualmente en el panel de Render.
+      # 'sync: false' es una buena práctica para que los valores no se guarden en Git.
+      - key: MYSQL_HOST
         sync: false
-      - key: MAIL_PASSWORD
+      - key: MYSQL_PORT
+        sync: false
+      - key: MYSQL_DATABASE
+        sync: false
+      - key: MYSQL_USER
+        sync: false
+      - key: MYSQL_PASSWORD
         sync: false
       - key: CLOUDINARY_URL
         sync: false
-      
-      # 3. Variables no secretas
-      - key: MAIL_HOST
-        value: sandbox.smtp.mailtrap.io
-      - key: MAIL_PORT
-        value: 2525
-        fromSecret: GMAIL_APP_PASSWORD
-      # Access Token de PRODUCCIÓN de Mercado Pago.
+      - key: RESEND_API_KEY
+        sync: false
