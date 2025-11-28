@@ -3,7 +3,7 @@
 services:
   # --- Servicio para el Backend de Spring Boot ---
   - type: web
-    name: jugueteria-api
+    name: tokeInka
     # Entorno de ejecución, le decimos que use Docker.
     runtime: docker
     # Ruta al Dockerfile dentro de tu repositorio.
